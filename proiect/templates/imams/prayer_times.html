@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}مواقيت الصلاة{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-clock"></i> مواقيت الصلاة</h1>
+    <p>إدارة وتحديث مواقيت الصلاة اليومية</p>
+</div>
+
+<div class="grid grid-2">
+    <!-- نموذج إضافة مواقيت الصلاة -->
+    <div class="form-container fade-in">
+        <h2><i class="fas fa-plus-circle"></i> إضافة مواقيت صلاة</h2>
+        <form action="{{ url_for('add_prayer_time') }}" method="POST">
+            <div class="form-group">
+                <label for="date">التاريخ:</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+            
+            <div class="prayer-times-grid">
+                <div class="form-group">
+                    <label for="fajr">صلاة الفجر:</label>
+                    <input type="time" id="fajr" name="fajr" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dhuhr">صلاة الظهر:</label>
+                    <input type="time" id="dhuhr" name="dhuhr" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asr">صلاة العصر:</label>
+                    <input type="time" id="asr" name="asr" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maghrib">صلاة المغرب:</label>
+                    <input type="time" id="maghrib" name="maghrib" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="isha">صلاة العشاء:</label>
+                    <input type="time" id="isha" name="isha" class="form-control" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i> حفظ المواقيت
+            </button>
+        </form>
+    </div>
+
+    <!-- مواقيت الصلاة الحالية -->
+    <div class="fade-in">
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-history"></i> سجل مواقيت الصلاة</h2>
+            </div>
+            
+            {% if times %}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الفجر</th>
+                            <th>الظهر</th>
+                            <th>العصر</th>
+                            <th>المغرب</th>
+                            <th>العشاء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for time in times %}
+                        <tr>
+                            <td><strong>{{ time['date'] }}</strong></td>
+                            <td class="prayer-time-cell">{{ time['fajr'] }}</td>
+                            <td class="prayer-time-cell">{{ time['dhuhr'] }}</td>
+                            <td class="prayer-time-cell">{{ time['asr'] }}</td>
+                            <td class="prayer-time-cell">{{ time['maghrib'] }}</td>
+                            <td class="prayer-time-cell">{{ time['isha'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-clock"></i>
+                <h3>لا توجد مواقيت صلاة مسجلة</h3>
+                <p>ابدأ بإضافة أول مواقيت صلاة</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- عرض مواقيت اليوم -->
+        {% if times and times[0] %}
+        <div class="current-prayer-times fade-in">
+            <h3>مواقيت الصلاة لليوم</h3>
+            <div class="prayer-cards">
+                <div class="prayer-card fajr">
+                    <div class="prayer-name">الفجر</div>
+                    <div class="prayer-time">{{ times[0]['fajr'] }}</div>
+                </div>
+                <div class="prayer-card dhuhr">
+                    <div class="prayer-name">الظهر</div>
+                    <div class="prayer-time">{{ times[0]['dhuhr'] }}</div>
+                </div>
+                <div class="prayer-card asr">
+                    <div class="prayer-name">العصر</div>
+                    <div class="prayer-time">{{ times[0]['asr'] }}</div>
+                </div>
+                <div class="prayer-card maghrib">
+                    <div class="prayer-name">المغرب</div>
+                    <div class="prayer-time">{{ times[0]['maghrib'] }}</div>
+                </div>
+                <div class="prayer-card isha">
+                    <div class="prayer-name">العشاء</div>
+                    <div class="prayer-time">{{ times[0]['isha'] }}</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الجداول{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-calendar-alt"></i> إدارة الجداول الزمنية</h1>
+    <p>إدارة الجداول الزمنية للدروس والأنشطة</p>
+</div>
+
+<div class="grid grid-2">
+    <!-- نموذج إضافة جدول -->
+    <div class="form-container fade-in">
+        <h2><i class="fas fa-plus-circle"></i> إضافة جدول جديد</h2>
+        <form action="{{ url_for('add_schedule') }}" method="POST">
+            <div class="form-group">
+                <label for="group_id">المجموعة:</label>
+                <select id="group_id" name="group_id" class="form-control" required>
+                    <option value="">اختر المجموعة</option>
+                    {% for group in groups %}
+                    <option value="{{ group['id'] }}">{{ group['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="day">اليوم:</label>
+                <select id="day" name="day" class="form-control" required>
+                    <option value="">اختر اليوم</option>
+                    <option value="السبت">السبت</option>
+                    <option value="الأحد">الأحد</option>
+                    <option value="الاثنين">الاثنين</option>
+                    <option value="الثلاثاء">الثلاثاء</option>
+                    <option value="الأربعاء">الأربعاء</option>
+                    <option value="الخميس">الخميس</option>
+                    <option value="الجمعة">الجمعة</option>
+                </select>
+            </div>
+            
+            <div class="form-group">

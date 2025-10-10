@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة التبرعات{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-donate"></i> إدارة التبرعات</h1>
+    <p>تسجيل ومتابعة التبرعات المالية</p>
+</div>
+
+<div class="grid grid-2">
+    <!-- نموذج إضافة تبرع -->
+    <div class="form-container fade-in">
+        <h2><i class="fas fa-plus-circle"></i> تسجيل تبرع جديد</h2>
+        <form action="{{ url_for('add_donation') }}" method="POST">
+            <div class="form-group">
+                <label for="donor_id">المتبرع:</label>
+                <select id="donor_id" name="donor_id" class="form-control">
+                    <option value="">اختر المتبرع</option>
+                    {% for donor in donors %}
+                    <option value="{{ donor['id'] }}">{{ donor['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">المبلغ (DA):</label>
+                <input type="number" id="amount" name="amount" class="form-control" step="0.01" min="0" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="donation_type">نوع التبرع:</label>
+                <select id="donation_type" name="donation_type" class="form-control" required>
+                    <option value="نقدي">نقدي</option>
+                    <option value="تحويل بنكي">تحويل بنكي</option>
+                    <option value="عيني">عيني</option>
+                    <option value="أخرى">أخرى</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">تاريخ التبرع:</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">وصف التبرع:</label>
+                <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i> تسجيل التبرع
+            </button>
+        </form>
+    </div>
+
+    <!-- قائمة التبرعات -->
+    <div class="table-container fade-in">
+        <div class="table-header">
+            <h2><i class="fas fa-list"></i> سجل التبرعات</h2>
+            <span class="badge">{{ donations|length }} تبرع</span>
+        </div>
+        
+        {% if donations %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>المتبرع</th>
+                        <th>المبلغ</th>
+                        <th>النوع</th>
+                        <th>التاريخ</th>
+                        <th>الوصف</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donation in donations %}
+                    <tr>
+                        <td>
+                            <strong>{{ donation['donor_name'] or 'مجهول' }}</strong>
+                        </td>
+                        <td>
+                            <span class="amount">{{ donation['amount'] }} DA</span>
+                        </td>
+                        <td>
+                            <span class="donation-type {{ donation['donation_type'] }}">
+                                {{ donation['donation_type'] }}
+                            </span>
+                        </td>
+                        <td>{{ donation['date'] }}</td>
+                        <td>{{ donation['description'] or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- إحصائيات التبرعات -->
+        <div class="donation-stats">
+            <div class="stat-card">
+                <h4>إجمالي التبرعات</h4>
+                <p class="total-amount">{{ total_donations }} DA</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-donate"></i>
+            <h3>لا توجد تبرعات مسجلة</h3>
+            <p>ابدأ بتسجيل أول تبرع في النظام</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المسجد - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    
+</head>
+<body>
+   
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="{{ url_for('index') }}" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-mosque"></i>
+                    </div>
+                    <div class="logo-text">نظام إدارة المسجد</div>
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">
+                        <i class="fas fa-home"></i> الرئيسية
+                    </a></li>
+                    <li><a href="{{ url_for('imams') }}" class="{% if request.endpoint == 'imams' %}active{% endif %}">
+                        <i class="fas fa-user-tie"></i> الأئمة
+                    </a></li>
+                    <li><a href="{{ url_for('prayer_times') }}" class="{% if request.endpoint == 'prayer_times' %}active{% endif %}">
+                        <i class="fas fa-clock"></i> مواقيت الصلاة
+                    </a></li>
+                    <li><a href="{{ url_for('donors') }}" class="{% if request.endpoint == 'donors' %}active{% endif %}">
+                        <i class="fas fa-hand-holding-heart"></i> المتبرعين
+                    </a></li>
+                    <li><a href="{{ url_for('donations') }}" class="{% if request.endpoint == 'donations' %}active{% endif %}">
+                        <i class="fas fa-donate"></i> التبرعات
+                    </a></li>
+                    <li><a href="{{ url_for('students') }}" class="{% if request.endpoint == 'students' %}active{% endif %}">
+                        <i class="fas fa-user-graduate"></i> الطلبة
+                    </a></li>
+                    <li><a href="{{ url_for('groups') }}" class="{% if request.endpoint == 'groups' %}active{% endif %}">
+                        <i class="fas fa-users"></i> الأفواج
+                    </a></li>
+                    <li><a href="{{ url_for('schedules') }}" class="{% if request.endpoint == 'schedules' %}active{% endif %}">
+                        <i class="fas fa-calendar-alt"></i> الجداول
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main">
+        <div class="container">
+            <!-- التنبيهات -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} fade-in">
+                            <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- محتوى الصفحة -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 نظام إدارة المسجد. جميع الحقوق محفوظة.</p>
+            <p>تم التطوير بخدمة المجتمع</p>
+        </div>
+    </footer>
+
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

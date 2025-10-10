@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة المتبرعين{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-hand-holding-heart"></i> إدارة المتبرعين</h1>
+    <p>إضافة وتعديل وحذف بيانات المتبرعين</p>
+</div>
+
+<div class="grid grid-2">
+    <!-- نموذج إضافة متبرع -->
+    <div class="form-container fade-in">
+        <h2><i class="fas fa-plus-circle"></i> إضافة متبرع جديد</h2>
+        <form action="{{ url_for('add_donor') }}" method="POST">
+            <div class="form-group">
+                <label for="name">اسم المتبرع:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">رقم الهاتف:</label>
+                <input type="tel" id="phone" name="phone" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">البريد الإلكتروني:</label>
+                <input type="email" id="email" name="email" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="address">العنوان:</label>
+                <textarea id="address" name="address" class="form-control" rows="3"></textarea>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i> إضافة المتبرع
+            </button>
+        </form>
+    </div>
+
+    <!-- قائمة المتبرعين -->
+    <div class="table-container fade-in">
+        <div class="table-header">
+            <h2><i class="fas fa-list"></i> قائمة المتبرعين</h2>
+            <span class="badge">{{ donors|length }} متبرع</span>
+        </div>
+        
+        {% if donors %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>الهاتف</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>العنوان</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donor in donors %}
+                    <tr>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar donor">
+                                    <i class="fas fa-hand-holding-heart"></i>
+                                </div>
+                                <div class="user-details">
+                                    <strong>{{ donor['name'] }}</strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ donor['phone'] or '-' }}</td>
+                        <td>{{ donor['email'] or '-' }}</td>
+                        <td>{{ donor['address'] or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h3>لا توجد متبرعين مسجلين</h3>
+            <p>ابدأ بإضافة أول متبرع إلى النظام</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

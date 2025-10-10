@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الطلبة{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-user-graduate"></i> إدارة الطلبة</h1>
+    <p>إضافة وتعديل وحذف بيانات الطلبة</p>
+</div>
+
+<div class="grid grid-2">
+    <!-- نموذج إضافة طالب -->
+    <div class="form-container fade-in">
+        <h2><i class="fas fa-plus-circle"></i> إضافة طالب جديد</h2>
+        <form action="{{ url_for('add_student') }}" method="POST">
+            <div class="form-group">
+                <label for="name">اسم الطالب:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">العمر:</label>
+                <input type="number" id="age" name="age" class="form-control" min="5" max="30">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">رقم هاتف الطالب:</label>
+                <input type="tel" id="phone" name="phone" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="parent_phone">رقم هاتف ولي الأمر:</label>
+                <input type="tel" id="parent_phone" name="parent_phone" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="level">المستوى الدراسي:</label>
+                <select id="level" name="level" class="form-control">
+                    <option value="">اختر المستوى</option>
+                    <option value="مبتدئ">مبتدئ</option>
+                    <option value="متوسط">متوسط</option>
+                    <option value="متقدم">متقدم</option>
+                    <option value="حفظ">حفظ</option>
+                    <option value="تلاوة">تلاوة</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i> إضافة الطالب
+            </button>
+        </form>
+    </div>
+
+    <!-- قائمة الطلبة -->
+    <div class="table-container fade-in">
+        <div class="table-header">
+            <h2><i class="fas fa-list"></i> قائمة الطلبة</h2>
+            <span class="badge">{{ students|length }} طالب</span>
+        </div>
+        
+        {% if students %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>العمر</th>
+                        <th>هاتف الطالب</th>
+                        <th>هاتف ولي الأمر</th>
+                        <th>المستوى</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar student">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="user-details">
+                                    <strong>{{ student['name'] }}</strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ student['age'] or '-' }}</td>
+                        <td>{{ student['phone'] or '-' }}</td>
+                        <td>{{ student['parent_phone'] or '-' }}</td>
+                        <td>
+                            <span class="level-badge {{ student['level'] }}">
+                                {{ student['level'] or '-' }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('delete_student', student_id=student['id']) }}" 
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('هل أنت متأكد من حذف هذا الطالب؟')">
+                                <i class="fas fa-trash"></i> حذف
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- إحصائيات الطلبة -->
+        <div class="students-stats">
+            <div class="stat-card">
+                <h4>توزيع الطلبة حسب المستوى</h4>
+                <div class="levels-distribution">
+                    {% for level, count in levels_stats.items() %}
+                    <div class="level-item">
+                        <span class="level-name">{{ level or 'غير محدد' }}</span>
+                        <span class="level-count">{{ count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-user-graduate"></i>
+            <h3>لا توجد طلبة مسجلين</h3>
+            <p>ابدأ بإضافة أول طالب إلى النظام</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

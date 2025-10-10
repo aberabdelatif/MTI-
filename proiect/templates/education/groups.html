@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الأفواج{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-users"></i> إدارة الأفواج</h1>
+    <p>إدارة مجموعات الطلبة والأقسام التعليمية</p>
+</div>
+
+<div class="grid grid-2">
+    <!-- نموذج إضافة مجموعة -->
+    <div class="form-container fade-in">
+        <h2><i class="fas fa-plus-circle"></i> إضافة مجموعة جديدة</h2>
+        <form action="{{ url_for('add_group') }}" method="POST">
+            <div class="form-group">
+                <label for="name">اسم المجموعة:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="teacher">اسم المعلم:</label>
+                <input type="text" id="teacher" name="teacher" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="level">المستوى:</label>
+                <select id="level" name="level" class="form-control">
+                    <option value="">اختر المستوى</option>
+                    <option value="مبتدئ">مبتدئ</option>
+                    <option value="متوسط">متوسط</option>
+                    <option value="متقدم">متقدم</option>
+                    <option value="حفظ">حفظ</option>
+                    <option value="تلاوة">تلاوة</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="max_students">الحد الأقصى للطلبة:</label>
+                <input type="number" id="max_students" name="max_students" class="form-control" min="1" max="50">
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i> إضافة المجموعة
+            </button>
+        </form>
+    </div>
+
+    <!-- قائمة المجموعات -->
+    <div class="table-container fade-in">
+        <div class="table-header">
+            <h2><i class="fas fa-list"></i> قائمة الأفواج</h2>
+            <span class="badge">{{ groups|length }} مجموعة</span>
+        </div>
+        
+        {% if groups %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم المجموعة</th>
+                        <th>المعلم</th>
+                        <th>المستوى</th>
+                        <th>الحد الأقصى</th>
+                        <th>عدد الطلبة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                    <tr>
+                        <td>
+                            <div class="group-info">
+                                <div class="group-avatar">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="group-details">
+                                    <strong>{{ group['name'] }}</strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ group['teacher'] or '-' }}</td>
+                        <td>
+                            <span class="level-badge {{ group['level'] }}">
+                                {{ group['level'] or '-' }}
+                            </span>
+                        </td>
+                        <td>{{ group['max_students'] or 'غير محدد' }}</td>
+                        <td>
+                            <span class="students-count">{{ group['student_count'] or 0 }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-users"></i>
+            <h3>لا توجد مجموعات مسجلة</h3>
+            <p>ابدأ بإضافة أول مجموعة إلى النظام</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

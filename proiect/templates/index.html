@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}الرئيسية{% endblock %}
+
+{% block content %}
+<!-- قسم الهيرو -->
+<section class="hero">
+    <div class="container">
+        <h1>مرحباً بك في نظام إدارة المسجد</h1>
+        <p>نظام متكامل لإدارة شؤون المسجد والتحصيل العلمي</p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <i class="fas fa-user-tie"></i>
+                <span>{{ imams_count }} إمام</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-user-graduate"></i>
+                <span>{{ students_count }} طالب</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-donate"></i>
+                <span>{{ donations_total }} ر.س</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- لوحة التحكم -->
+<section class="dashboard">
+    <div class="card fade-in">
+        <div class="card-icon">
+            <i class="fas fa-user-tie"></i>
+        </div>
+        <h3>إدارة الأئمة</h3>
+        <p>إدارة معلومات الأئمة وتحديث بياناتهم</p>
+        <a href="{{ url_for('imams') }}" class="btn">إدارة الأئمة</a>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-icon">
+            <i class="fas fa-clock"></i>
+        </div>
+        <h3>مواقيت الصلاة</h3>
+        <p>إدارة وتحديث مواقيت الصلاة اليومية</p>
+        <a href="{{ url_for('prayer_times') }}" class="btn">عرض المواقيت</a>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-icon">
+            <i class="fas fa-hand-holding-heart"></i>
+        </div>
+        <h3>المتبرعين</h3>
+        <p>إدارة بيانات المتبرعين ومعلوماتهم</p>
+        <a href="{{ url_for('donors') }}" class="btn">إدارة المتبرعين</a>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-icon">
+            <i class="fas fa-donate"></i>
+        </div>
+        <h3>التبرعات</h3>
+        <p>تسجيل ومتابعة التبرعات المالية</p>
+        <a href="{{ url_for('donations') }}" class="btn">إدارة التبرعات</a>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-icon">
+            <i class="fas fa-user-graduate"></i>
+        </div>
+        <h3>الطلبة</h3>
+        <p>إدارة طلبة التحصيل العلمي</p>
+        <a href="{{ url_for('students') }}" class="btn">إدارة الطلبة</a>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <h3>الأفواج</h3>
+        <p>إدارة مجموعات الطلبة والأقسام</p>
+        <a href="{{ url_for('groups') }}" class="btn">إدارة الأفواج</a>
+    </div>
+
+    <div class="card fade-in">
+        <div class="card-icon">
+            <i class="fas fa-calendar-alt"></i>
+        </div>
+        <h3>الجداول</h3>
+        <p>إدارة الجداول الزمنية للدروس</p>
+        <a href="{{ url_for('schedules') }}" class="btn">إدارة الجداول</a>
+    </div>
+</section>
+{% endblock %}

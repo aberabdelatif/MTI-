@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة الأئمة{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-user-tie"></i> إدارة الأئمة</h1>
+    <p>إضافة وتعديل وحذف بيانات الأئمة</p>
+</div>
+
+<div class="grid grid-2">
+    <!-- نموذج إضافة إمام -->
+    <div class="form-container fade-in">
+        <h2><i class="fas fa-plus-circle"></i> إضافة إمام جديد</h2>
+        <form action="{{ url_for('add_imam') }}" method="POST">
+            <div class="form-group">
+                <label for="name">اسم الإمام:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">رقم الهاتف:</label>
+                <input type="tel" id="phone" name="phone" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">البريد الإلكتروني:</label>
+                <input type="email" id="email" name="email" class="form-control">
+            </div>
+            
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i> إضافة الإمام
+            </button>
+        </form>
+    </div>
+
+    <!-- قائمة الأئمة -->
+    <div class="table-container fade-in">
+        <div class="table-header">
+            <h2><i class="fas fa-list"></i> قائمة الأئمة</h2>
+            <span class="badge">{{ imams|length }} إمام</span>
+        </div>
+        
+        {% if imams %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>الهاتف</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for imam in imams %}
+                    <tr>
+                        <td>
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <strong>{{ imam['name'] }}</strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ imam['phone'] or '-' }}</td>
+                        <td>{{ imam['email'] or '-' }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_imam', imam_id=imam['id']) }}" 
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('هل أنت متأكد من حذف هذا الإمام؟')">
+                                <i class="fas fa-trash"></i> حذف
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-user-tie"></i>
+            <h3>لا توجد أئمة مسجلين</h3>
+            <p>ابدأ بإضافة أول إمام إلى النظام</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
