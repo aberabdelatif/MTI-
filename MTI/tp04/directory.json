@@ -1,0 +1,32 @@
+[
+    {
+        "firstname": "Ahmed",
+        "familyname": "Mahdi",
+        "tel": "0778787887"
+    },
+    {
+        "firstname": "Mohamed",
+        "familyname": "Mahdi",
+        "tel": "0778787887"
+    },
+    {
+        "firstname": "Mounir",
+        "familyname": "Katibi",
+        "tel": "0778787887"
+    },
+    {
+        "firstname": "Noui",
+        "familyname": "Brahimi",
+        "tel": "0778787887"
+    },
+    {
+        "familyname": "abdeatif",
+        "firstname": "aber",
+        "tel": "055555555"
+    },
+    {
+        "familyname": "aber",
+        "firstname": "aber",
+        "tel": "2222222"
+    }
+]

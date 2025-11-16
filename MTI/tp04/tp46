@@ -1,0 +1,88 @@
+from tkinter import Tk, Label, Button, Entry, END, W, E
+from model_file import model_file  # أو model_json إذا تريد JSON
+
+class view_tk:
+    def __init__(self, model):
+        self.model = model
+        self.master = Tk()
+        self.master.title("Directory")
+
+        # Labels
+        self.label_familyname = Label(self.master, text="Family Name:")
+        self.label_firstname = Label(self.master, text="First Name:")
+        self.label_tel = Label(self.master, text="Tel:")
+        self.label_output = Label(self.master, text="Output:")
+
+        # Entry fields
+        self.entry_familyname = Entry(self.master, width=30)
+        self.entry_firstname = Entry(self.master, width=30)
+        self.entry_tel = Entry(self.master, width=30)
+
+        # Buttons
+        self.button_search = Button(self.master, text="Search", command=lambda: self.update("search"))
+        self.button_add = Button(self.master, text="Add", command=lambda: self.update("add"))
+        self.button_all = Button(self.master, text="Show All", command=lambda: self.update("get_all"))
+
+        # Output Text
+        self.output = Entry(self.master, width=80)
+
+        # Layout
+        self.label_familyname.grid(row=0, column=0, sticky=W)
+        self.label_firstname.grid(row=0, column=1, sticky=W)
+        self.label_tel.grid(row=0, column=2, sticky=W)
+
+        self.entry_familyname.grid(row=1, column=0, sticky=W+E)
+        self.entry_firstname.grid(row=1, column=1, sticky=W+E)
+        self.entry_tel.grid(row=1, column=2, sticky=W+E)
+
+        self.button_search.grid(row=2, column=0)
+        self.button_add.grid(row=2, column=1)
+        self.button_all.grid(row=2, column=2)
+
+        self.label_output.grid(row=3, column=0, sticky=W)
+        self.output.grid(row=4, column=0, columnspan=3, sticky=W+E)
+
+    def update(self, method):
+        familyname = self.entry_familyname.get().strip()
+        firstname = self.entry_firstname.get().strip()
+        tel = self.entry_tel.get().strip()
+        self.output.delete(0, END)
+
+        if method == "search":
+            result = self.search(familyname)
+        elif method == "add":
+            result = self.add(familyname, firstname, tel)
+        elif method == "get_all":
+            result = self.get_all()
+        else:
+            result = "Unknown method"
+
+        self.output.insert(END, str(result))
+
+    def add(self, familyname, firstname, tel):
+        self.model.add(familyname, firstname, tel)
+        return "Person added successfully!"
+
+    def search(self, familyname):
+        result = self.model.search(familyname)
+        if result:
+            return result
+        else:
+            return f"'{familyname}' not found"
+
+    def get_all(self):
+        return self.model.get_all()
+
+    def run(self):
+        self.master.mainloop()
+
+
+# Controller-like launcher
+def controller3():
+    data_model = model_file()  # أو model_json()
+    my_viewer = view_tk(data_model)
+    my_viewer.run()
+
+
+if __name__ == "__main__":
+    controller3()
